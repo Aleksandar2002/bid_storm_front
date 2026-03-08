@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+// $main: #1c4d8d;
+// $secondary: #4988c4;
+// $light: #bde8f5;
+// $dark: #0f2854;
+
+$main: #5ad2f4;
+// $secondary: #6d72c3;
+$secondary: #4c6085;
+$light: #fffaff;
+$dark: #1f271b;
+
+$success: #69f569;
+$error: #ad0042;
+$warning: #61a2fa;
+$links: #00fff2;
+
+@mixin flex-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-col {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+@mixin transition($time) {
+  transition: all ease-in-out $time;
+}
+
+body {
+  background-color: $dark;
+  color: $light;
+  .wrapper {
+    width: 80%;
+    margin: 0 auto;
+  }
+  h3 {
+    text-align: center;
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  .form-center-div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  p,
+  label {
+    font-weight: 400;
+  }
+
+  .guest-div {
+    @include flex-box();
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+  }
+
+  header {
+    width: 100%;
+    height: 120px;
+    background-color: $main;
+    padding: 20px 0;
+    @include flex-box();
+    .wrapper {
+      @include flex-box();
+    }
+    .btns {
+      @include flex-box();
+      button {
+        margin: 0 10px;
+      }
+    }
+    .search-box {
+      input {
+        border-radius: 5px 0 0 5px;
+      }
+      button {
+        border-radius: 0 5px 5px 0;
+      }
+    }
+  }
+
+  nav {
+    @include flex-box();
+    ul {
+      @include flex-box();
+      li {
+        margin: 0 3px;
+
+        a {
+          color: $dark;
+          @include transition(0.23s);
+          transform: scale(1);
+          display: inline-block;
+          padding: 4px 6px;
+          border-radius: 5px;
+          &:hover {
+            transform: scale(1.15);
+            color: $secondary;
+            background-color: $light;
+            box-shadow: 0 0 5px $dark;
+          }
+        }
+        &.social-link {
+          font-size: 1.5rem;
+          margin: 0 10px;
+          a {
+            padding: 0;
+          }
+        }
+      }
+    }
+    &.columns,
+    &.socials {
+      @include flex-col();
+      ul {
+        @include flex-col();
+        li {
+          margin: 3px 0;
+        }
+      }
+    }
+  }
+
+  .bs-form-div {
+    background-color: $secondary;
+    padding: 80px 50px;
+    width: 700px;
+    border-radius: 10px;
+    @include flex-col();
+    .bs-form {
+      margin-top: 10px;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
+      .field-generic-wrapper {
+        width: calc((var(--cols) / 50) * 100%);
+
+        margin-left: calc((var(--offset-left) / 50) * 100%);
+        margin-right: calc((var(--offset-right) / 50) * 100%);
+        box-sizing: border-box;
+      }
+
+      .form-field {
+        position: relative;
+        width: 100%;
+        @include flex-col();
+        align-items: flex-start;
+        justify-content: center;
+        margin: 25px 0 0 0;
+        input,
+        select {
+          width: 100%;
+        }
+
+        &.focused label {
+          color: $light;
+          transform: translateY(-27px);
+        }
+
+        label {
+          color: $dark;
+          position: absolute;
+          @include transition(0.3s);
+          margin-left: 12px;
+        }
+      }
+      .submit-btn {
+        margin-top: 20px;
+        width: 100%;
+      }
+      .show-password {
+        color: $dark;
+        position: absolute;
+        cursor: pointer;
+        right: 2%;
+        background-color: $light;
+        box-shadow: none;
+      }
+    }
+    .additional-form-text a {
+      color: $links;
+    }
+    .extra-content {
+      width: 100%;
+    }
+  }
+
+  .code-verification-div {
+    form {
+      width: 60% !important;
+      @include flex-col();
+    }
+    .input-div {
+      @include flex-box();
+      justify-content: space-between;
+      margin: 10px auto;
+      width: 100%;
+      .code-input {
+        width: 30px;
+        font-size: 2rem;
+        padding: 2px 5px;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        /* Firefox */
+        &[type="number"] {
+          -moz-appearance: textfield;
+        }
+      }
+    }
+  }
+
+  .error-message {
+    color: $error;
+    width: 100%;
+    border-radius: 5px;
+    background-color: $dark;
+    padding: 4px 6px;
+    margin-top: 10px;
+    font-size: 0.8rem;
+  }
+
+  input,
+  select {
+    background-color: $light;
+    color: $dark;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-weight: 400;
+    border: none;
+    outline: none;
+    @include transition(0.2s);
+    box-shadow: 0 0 5px $dark;
+    &:focus {
+      box-shadow: 0 0 7px $light;
+    }
+  }
+
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  button {
+    border-radius: 5px;
+    color: $dark;
+    background-color: $light;
+    cursor: pointer;
+    @include transition(0.2s);
+    box-shadow: 0 0 5px $dark;
+    padding: 5px 12px;
+    &:hover {
+      color: $light;
+      background-color: $dark;
+    }
+  }
+
+  .spinner-div {
+    background-color: $dark;
+  }
+
+  .spinner {
+    border: 6px solid rgba($light, 0.3);
+    border-top-color: $light;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  input::placeholder {
+    color: rgba($dark, 0.6);
+    font-style: italic;
+    opacity: 1;
+  }
+
+  footer {
+    background-color: $main;
+    width: 100%;
+    min-height: 170px;
+    padding: 20px 0;
+    .wrapper {
+      @include flex-box();
+    }
+  }
+
+  .toast-div {
+    position: absolute;
+    right: 1%;
+    bottom: 2%;
+    padding: 6px 14px;
+    border-radius: 5px;
+    color: $dark;
+    &.toast-color-success {
+      background-color: $success;
+    }
+    &.toast-color-error {
+      background-color: $error;
+      color: $light;
+    }
+    &.toast-color-warning {
+      background-color: $warning;
+    }
+  }
+}
