@@ -1,9 +1,9 @@
-import { useLoader } from "../../hooks/useLoader";
+import { useLoading } from "../../../app/stores/loaderStore";
 
 const Loader = () => {
-  const { loading } = useLoader();
+  const { isLoading } = useLoading();
 
-  if (!loading) {
+  if (!isLoading) {
     return null;
   }
 

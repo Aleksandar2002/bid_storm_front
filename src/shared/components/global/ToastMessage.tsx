@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import { useToast } from "../../hooks/useToast";
+import { useToast } from "../../../app/stores/toastMessageStore";
 
 const ToastMessage = () => {
   const { toast, hideToast } = useToast();
 
   useEffect(() => {
-    if (toast?.visibility) {
+    if (toast.visibility) {
       const timer = setTimeout(() => {
         hideToast();
-      }, 7000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [toast, hideToast]);
@@ -18,8 +18,8 @@ const ToastMessage = () => {
   }
 
   return (
-    <div className={"toast-div toast-color-" + toast.class}>
-      <p>{toast?.message}</p>
+    <div className={"toast-div toast-color-" + toast.type}>
+      <p>{toast.message}</p>
     </div>
   );
 };

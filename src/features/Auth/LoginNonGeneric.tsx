@@ -6,7 +6,7 @@ import z from "zod";
 import TextField from "../../shared/components/form/TextField";
 import { useLoader } from "../../shared/hooks/useLoader";
 import { getUserData, login } from "../../app/services/authService";
-import { useToast } from "../../shared/hooks/useToast";
+import { useToast } from "../../app/stores/toastMessageStore";
 
 const schema = z.object({
   email: z.email({
@@ -48,8 +48,6 @@ function LoginNonGeneric() {
     setLoading(true);
     try {
       const resp = await login(data.email, data.password);
-      console.log(resp);
-
       if (resp?.status == 204) {
         await handleSuccessfulLogin();
       }

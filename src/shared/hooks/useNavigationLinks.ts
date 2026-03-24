@@ -1,11 +1,18 @@
+import { type UseCaseId } from "../../app/Enums/UseCases";
+
 export type NavigationLink = {
   title: string;
   path: string;
-  useCaseId?: number;
+  useCaseId?: UseCaseId;
+  role?: string;
 };
 
-export const useNavigationLinks = () => {
+export const useNavigationLinks: () => NavigationLink[] = () => {
   return [
+    {
+      path: "/landing",
+      title: "Home",
+    },
     {
       path: "/auctions",
       title: "Auctions",
@@ -19,8 +26,9 @@ export const useNavigationLinks = () => {
       title: "My Auctions",
     },
     {
-      path: "/watchlist",
-      title: "Watchlist",
+      path: "/dashboard",
+      title: "Dashboard",
+      role: "Admin",
     },
   ] as NavigationLink[];
 };

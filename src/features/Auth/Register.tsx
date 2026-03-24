@@ -6,19 +6,16 @@ import {
   registerSchema,
   type RegistrationFormType,
 } from "./formData/registerData";
-import { useLoader } from "../../shared/hooks/useLoader";
 import { register } from "../../app/services/authService";
-import { useToast } from "../../shared/hooks/useToast";
 import type { ValidationErrorType } from "../../types/ValidationType";
 import { useState } from "react";
+import { useToast } from "../../app/stores/toastMessageStore";
 
 function Register() {
-  const { setLoading } = useLoader();
   const { setErrorToast, setSuccessToast } = useToast();
   const [serverErrors, setServerErrors] = useState<string[]>();
   const navigate = useNavigate();
   const handleFormSubmit = async (data: RegistrationFormType) => {
-    setLoading(true);
     try {
       const resp = await register(data);
       console.log(resp);
@@ -27,6 +24,8 @@ function Register() {
         await handleSuccessfulRegister();
       }
     } catch (err: any) {
+      console.log(err);
+
       setErrorToast("Some error while registering");
       if (err?.response?.status == 422) {
         setServerErrors(
@@ -34,8 +33,6 @@ function Register() {
         );
       }
       console.log(err?.response);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -62,7 +59,7 @@ function Register() {
 
   return (
     <div>
-      <div className="container font-bold">
+      <div className="font-bold">
         <GenericForm
           title="Registration form"
           fields={registerFormFields}
@@ -75,7 +72,9 @@ function Register() {
           </p>
           {serverErrors && (
             <div className="error-message">
-              {serverErrors.map((err) => err)}
+              {serverErrors.map((err) => (
+                <div>{err}</div>
+              ))}
             </div>
           )}
         </GenericForm>

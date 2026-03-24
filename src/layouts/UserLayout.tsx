@@ -1,9 +1,15 @@
-import React from "react";
 import { Outlet } from "react-router";
-import Header from "../shared/components/Header";
-import Footer from "../shared/components/Footer";
-
+import Header from "../shared/components/global/Header";
+import Footer from "../shared/components/global/Footer";
+import SharedGlobalComponents from "./SharedGlobalComponents";
+import { useEffect } from "react";
+import { useWishlistStore } from "../app/stores/wishlistStore";
 function UserLayout() {
+  useEffect(() => {
+    const wishlistStore = useWishlistStore.getState();
+    wishlistStore.fetchWishlist();
+  }, []);
+
   return (
     <div>
       <Header />
@@ -13,6 +19,7 @@ function UserLayout() {
         </div>
       </main>
       <Footer />
+      <SharedGlobalComponents />
     </div>
   );
 }

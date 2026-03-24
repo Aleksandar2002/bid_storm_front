@@ -49,7 +49,7 @@ export const registerSchema = z
         error: "Gender must be Male or Female",
       }),
     ),
-    street: z
+    street: z.coerce
       .string()
       .regex(
         /^[A-Za-zČĆŽŠĐčćžšđ0-9\s.-]{3,50}$/,
@@ -61,7 +61,7 @@ export const registerSchema = z
         /^[0-9]+[A-Za-z]?([\\/-][0-9]+)?$/,
         "Invalid street number format",
       ),
-    apartmentNumber: z.number(),
+    apartmentNumber: z.number().int().nullable().optional(),
     phoneNumber: z
       .string()
       .regex(/^(\+?\d{1,3}[- ]?)?\d{7,15}$/, "Invalid phone number format"),
@@ -76,20 +76,20 @@ export type RegistrationFormType = z.infer<typeof registerSchema>;
 
 export const registerFormFields: Array<IFormField<RegistrationFormType>> = [
   {
-    label: "Email",
+    label: "*Email",
     name: "email",
     type: "textField",
     cols: 24,
     rowOffsetRight: 2,
   },
   {
-    label: "Username",
+    label: "*Username",
     name: "username",
     type: "textField",
     cols: 24,
   },
   {
-    label: "Password",
+    label: "*Password",
     name: "password",
     type: "textField",
     cols: 24,
@@ -97,41 +97,41 @@ export const registerFormFields: Array<IFormField<RegistrationFormType>> = [
     textFieldType: "password",
   },
   {
-    label: "Confirm password",
+    label: "*Confirm password",
     name: "confirmPassword",
     type: "textField",
     cols: 24,
     textFieldType: "password",
   },
   {
-    label: "First name",
+    label: "*First name",
     name: "firstName",
     type: "textField",
     cols: 16,
     rowOffsetRight: 1,
   },
   {
-    label: "Last name",
+    label: "*Last name",
     name: "lastName",
     type: "textField",
     cols: 16,
     rowOffsetRight: 1,
   },
   {
-    label: "Phone number",
+    label: "*Phone number",
     name: "phoneNumber",
     type: "textField",
     cols: 16,
   },
   {
-    label: "Date of birth",
+    label: "*Date of birth",
     name: "dateOfBirth",
     type: "datePicker",
     cols: 16,
     rowOffsetRight: 1,
   },
   {
-    label: "Gender",
+    label: "*Gender",
     name: "gender",
     type: "select",
     cols: 16,
@@ -148,7 +148,7 @@ export const registerFormFields: Array<IFormField<RegistrationFormType>> = [
     ],
   },
   {
-    label: "City",
+    label: "*City",
     name: "placeId",
     type: "select",
     cols: 16,
@@ -157,26 +157,16 @@ export const registerFormFields: Array<IFormField<RegistrationFormType>> = [
       propertyTitleName: "name",
       propertyValueName: "id",
     },
-    // options: [
-    //   {
-    //     value: 1,
-    //     title: "Belgrade",
-    //   },
-    //   {
-    //     value: 2,
-    //     title: "Tehran",
-    //   },
-    // ],
   },
   {
-    label: "Street",
+    label: "*Street",
     name: "street",
     type: "textField",
     rowOffsetRight: 1,
     cols: 16,
   },
   {
-    label: "Street number",
+    label: "*Street number",
     name: "streetNumber",
     type: "textField",
     rowOffsetRight: 1,

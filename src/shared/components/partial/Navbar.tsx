@@ -1,6 +1,7 @@
 import React, { type ReactNode } from "react";
 import { useNavigationLinks } from "../../hooks/useNavigationLinks";
 import { Link } from "react-router";
+import Authorized from "../auth/Authorized";
 
 type NavbarProps = {
   children?: ReactNode;
@@ -15,7 +16,9 @@ const Navbar = ({ children, orientation }: NavbarProps) => {
       <ul>
         {links.map((link) => (
           <li key={link.path}>
-            <Link to={link.path}>{link.title}</Link>
+            <Authorized useCaseId={link.useCaseId} role={link.role}>
+              <Link to={link.path}>{link.title}</Link>
+            </Authorized>
           </li>
         ))}
       </ul>

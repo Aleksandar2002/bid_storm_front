@@ -8,27 +8,41 @@ import type {
   FieldValues,
   UseFormRegister,
 } from "react-hook-form";
+import Button from "../global/Button";
 
 type TextFieldProps<T extends FieldValues> = {
-  type: string;
+  type?: string;
   name: Path<T>;
   label: string;
-  register: UseFormRegister<T>;
-  errors: FieldErrors<T>;
+  register?: UseFormRegister<T>;
+  errors?: FieldErrors<T>;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const TextField = <T extends FieldValues>({
-  type,
+  type = "text",
   name,
   label,
   register,
   errors,
+  value,
+  onChange,
 }: TextFieldProps<T>) => {
   const error = get(errors, name);
-  const { watch } = useFormContext<T>();
-  const val = watch(name);
-  const [focused, setFocused] = useState(!!val);
+  const formContext = useFormContext<T>();
+  const watchVal = formContext?.watch
+    ? formContext.watch(name as Path<T>)
+    : undefined;
+
+  const currentVal = watchVal ?? value ?? "";
+
   const [inputType, setType] = useState(type);
+
+  const [isCurrentlyFocused, setIsCurrentlyFocused] = useState(false);
+  const shouldFloat =
+    isCurrentlyFocused ||
+    (currentVal !== "" && currentVal !== null && currentVal !== undefined);
 
   const handleShowPassword = (e: any) => {
     e.preventDefault();
@@ -38,29 +52,49 @@ const TextField = <T extends FieldValues>({
     }
     setType("password");
   };
-
+  const registeredProps = register ? register(name as Path<T>) : {};
+  const {
+    onBlur: registerOnBlur,
+    onChange: registerOnChange,
+    ...registerRest
+  } = registeredProps as any;
   return (
     <>
-      <div className={(focused ? "focused" : "") + " form-field"}>
+      <div
+        className={`form-field ${shouldFloat ? "focused" : ""} ${error ? "invalid-input-field" : ""}`}
+      >
         <label htmlFor={String(name)}>{label}: </label>
         <input
-          {...register(name)}
+          {...registerRest}
           type={inputType}
           name={String(name)}
           id={String(name)}
-          onFocus={() => setFocused(true)}
+          value={value}
+          onFocus={() => setIsCurrentlyFocused(true)}
           onBlur={(e) => {
-            if (!e.currentTarget.value) setFocused(false);
+            if (registerOnBlur) registerOnBlur(e);
+            setIsCurrentlyFocused(false);
+          }}
+          onChange={(e) => {
+            if (registerOnChange) registerOnChange(e);
+            if (onChange) onChange(e);
           }}
         />
         {type == "password" && (
-          <button className="show-password" onClick={handleShowPassword}>
+          <Button
+            btnClass="show-password"
+            handleClickFunction={handleShowPassword}
+          >
             {inputType == "password" && <FontAwesomeIcon icon={"eye"} />}
             {inputType == "text" && <FontAwesomeIcon icon={"eye-slash"} />}
-          </button>
+          </Button>
         )}
       </div>
-      {error && <div className="error-message">{error.message as string}</div>}
+      {error && (
+        <div className="error-message">
+          {Array.isArray(error) ? error[0]?.message : (error.message as string)}
+        </div>
+      )}
     </>
   );
 };

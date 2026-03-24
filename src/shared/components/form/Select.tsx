@@ -1,74 +1,115 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   get,
   type FieldErrors,
   type FieldValues,
   type Path,
-  type UseFormRegister,
 } from "react-hook-form";
 import type { IDataSource, ISelectOption } from "./IFormFIeld";
 import api from "../../../api/axios";
 import { useEffect, useState } from "react";
 
-type TextFieldProps<T extends FieldValues> = {
+type SelectProps<T extends FieldValues> = {
   name: Path<T>;
-  label: string;
-  register: UseFormRegister<T>;
-  errors: FieldErrors<T>;
+  label?: string;
+  // register: UseFormRegister<T>;
+  errors?: FieldErrors<T>;
   options?: Array<ISelectOption>;
-  dataSource: IDataSource;
+  dataSource?: IDataSource;
+  value: string | number;
+  onChange: (newVal: string | number) => void;
+  shouldReturnNumber?: boolean;
+  hasDefaultOption?: boolean;
+  selectClass?: string;
+  shouldSort?: boolean;
 };
 
 const Select = <T extends FieldValues>({
   name,
   label,
-  register,
+  // register,
   errors,
   options,
   dataSource,
-}: TextFieldProps<T>) => {
+  value,
+  onChange,
+  shouldReturnNumber = true,
+  hasDefaultOption = true,
+  selectClass,
+  shouldSort = true,
+}: SelectProps<T>) => {
   const error = get(errors, name);
   const [optionsState, setOptions] = useState(options ?? []);
 
+  const sort = (options: ISelectOption[]): ISelectOption[] => {
+    if (shouldSort) {
+      options = options.sort((a: any, b: any) =>
+        (a.title as string).localeCompare(b.title as string),
+      );
+    }
+    return options;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      if (dataSource.url) {
+      if (dataSource && dataSource.url) {
         const resp = await api.get(dataSource.url);
         const data = resp.data;
         if (dataSource.propertyTitleName || dataSource.propertyValueName) {
           const titleProp = dataSource.propertyTitleName ?? "title";
           const valueProp = dataSource.propertyValueName ?? "value";
-          console.log(valueProp);
 
-          setOptions(
-            data.map((x: any) => ({
-              title: x[titleProp],
-              value: x[valueProp],
-            })),
-          );
+          let options: ISelectOption[] = data.map((x: any) => ({
+            title: x[titleProp],
+            value: x[valueProp],
+          }));
+
+          options = sort(options);
+          setOptions(options);
         } else {
-          setOptions(data as ISelectOption[]);
+          const sortedData = sort(data as ISelectOption[]);
+          setOptions(sortedData);
         }
       }
     };
     fetchData();
   }, [
-    dataSource.url,
-    dataSource.propertyTitleName,
-    dataSource.propertyValueName,
+    dataSource?.url,
+    dataSource?.propertyTitleName,
+    dataSource?.propertyValueName,
   ]);
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    if (shouldReturnNumber && val !== "") {
+      onChange(Number(val));
+    } else {
+      onChange(val);
+    }
+  };
 
   return (
     <div className="form-field">
-      {optionsState && optionsState.length > 0 && (
+      {label && (
+        <label htmlFor={String(name)} className="fixed-label ">
+          {label}
+        </label>
+      )}
+      {optionsState && (
         <select
-          {...register(name, {
-            setValueAs: (v) => Number(v),
-          })}
+          key={
+            (dataSource?.url ? dataSource.url : String(name)) +
+            optionsState.length
+          }
+          className={selectClass ? selectClass : ""}
+          // {...register(name, { valueAsNumber: true })}
           name={String(name)}
           id={String(name)}
+          onChange={handleOnChange}
+          value={value}
         >
-          <option value="0">{label}</option>
+          {hasDefaultOption && <option value="">{"Choose an option"}</option>}
           {optionsState.map((x) => {
             return (
               <option key={x.value as any} value={x.value as any}>
@@ -79,7 +120,9 @@ const Select = <T extends FieldValues>({
         </select>
       )}
       {error && (
-        <span className="error-message">{error.message as string}</span>
+        <div className="error-message">
+          {Array.isArray(error) ? error[0]?.message : (error.message as string)}
+        </div>
       )}
     </div>
   );

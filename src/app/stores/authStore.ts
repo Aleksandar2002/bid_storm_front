@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { UseCaseId } from "../Enums/UseCases";
 
 type User = {
   id: number;
@@ -6,6 +7,7 @@ type User = {
   email: string;
   role: string;
   isSuperAdmin: boolean;
+  allowedUseCases: UseCaseId[];
 };
 
 type AuthState = {

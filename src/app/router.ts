@@ -2,16 +2,22 @@ import { createBrowserRouter, redirect } from "react-router";
 import GuestLayout from "../layouts/GuestLayout";
 import Register from "../features/Auth/Register";
 import UserLayout from "../layouts/UserLayout";
-import Auctions from "../features/Auctions/Auctions";
+import Auctions from "../features/AuctionsView/Auctions";
 import AuthGuard from "../routes/AuthGuard";
 import GuestGuard from "../routes/GuestGuard";
 import Login from "../features/Auth/Login";
 import AccessCodeVerification from "../features/Auth/AccessCodeVerification";
 import { routerLoader } from "../routes/routerLoader";
-import AddAuction from "../features/Auctions/AddAuction";
+import AddAuction from "../features/AddAuction/AddAuction";
 import Profile from "../features/User/Profile";
-import AuctionHistory from "../features/User/AuctionHistory";
-import Watchlist from "../features/User/Watchlist";
+// import AuctionHistory from "../features/User/AuctionHistory";
+import Dashboard from "../features/Dashboard/Dashboard";
+import AdminLayout from "../layouts/AdminLayout";
+import AdminGuard from "../routes/AdminGuard";
+import MyAuctions from "../features/AuctionsView/MyAuctions";
+import AuctionDetails from "../features/AuctionDetails/AuctionDetails";
+import Wishlist from "../features/User/Wishlist/Wishlist";
+import LandingPage from "../features/LandingPage/LandingPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         loader: () => redirect("/auctions"),
+      },
+      {
+        path: "/landing",
+        Component: LandingPage,
       },
       {
         Component: GuestGuard,
@@ -59,16 +69,29 @@ const router = createBrowserRouter([
                 Component: AddAuction,
               },
               {
+                path: "/auctions/:id",
+                Component: AuctionDetails,
+              },
+              {
                 path: "/profile",
                 Component: Profile,
               },
               {
                 path: "/myAuctions",
-                Component: AuctionHistory,
+                Component: MyAuctions,
               },
               {
-                path: "/watchlist",
-                Component: Watchlist,
+                path: "/wishlist",
+                Component: Wishlist,
+              },
+            ],
+          },
+          {
+            Component: AdminGuard,
+            children: [
+              {
+                Component: AdminLayout,
+                children: [{ path: "/dashboard", Component: Dashboard }],
               },
             ],
           },

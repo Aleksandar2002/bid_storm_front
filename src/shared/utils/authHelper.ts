@@ -15,12 +15,12 @@ export const getAndSetLoggedUser = async () => {
   const meResponse = await getUserData();
 
   const setUser = useAuthStore.getState().setUser;
-  console.log(meResponse);
   setUser({
     id: meResponse.data.id,
-    name: meResponse.data.name,
+    name: meResponse.data.fullName,
     isSuperAdmin: meResponse.data.isSuperAdmin,
     email: meResponse.data.email,
-    role: meResponse.data.role,
+    role: meResponse.data.roleName,
+    allowedUseCases: meResponse.data.allowedUseCases,
   });
 };

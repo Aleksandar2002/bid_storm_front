@@ -1,20 +1,32 @@
-@import "tailwindcss";
+// @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=PT+Mono&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
 // $main: #1c4d8d;
 // $secondary: #4988c4;
 // $light: #bde8f5;
 // $dark: #0f2854;
 
-$main: #5ad2f4;
 // $secondary: #6d72c3;
-$secondary: #4c6085;
-$light: #fffaff;
-$dark: #1f271b;
+// $main: #5ad2f4;
+// $secondary: #4c6085;
+// $light: #fffaff;
+// $dark: #1f271b;
 
-$success: #69f569;
-$error: #ad0042;
+$main: #3b429f;
+$secondary: #3ab795;
+// $secondary: #7494ea
+$light: #ebebeb;
+$dark: #1f2421;
+
+$success: #3ab795;
+$error: #ff4d4d;
+$red: #e45971;
 $warning: #61a2fa;
 $links: #00fff2;
+
+// --------------------------------------------- MIXINS ---------------------------------------------
 
 @mixin flex-box {
   display: flex;
@@ -29,13 +41,29 @@ $links: #00fff2;
   flex-direction: column;
 }
 
+@mixin grid($cols) {
+  display: grid;
+  justify-content: flex-start;
+  align-items: center;
+  grid-template-columns: repeat($cols, 1fr);
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
+}
+
 @mixin transition($time) {
   transition: all ease-in-out $time;
 }
 
+html,
 body {
-  background-color: $dark;
+  scroll-behavior: smooth !important;
+}
+
+body {
+  background-color: $light;
   color: $light;
+  font-family: "Lato", sans-serif;
+  font-size: 0.97rem;
   .wrapper {
     width: 80%;
     margin: 0 auto;
@@ -46,6 +74,10 @@ body {
   }
   h2 {
     font-size: 1.8rem;
+    text-align: center;
+  }
+  h4 {
+    font-size: 1.2rem;
     text-align: center;
   }
   .form-center-div {
@@ -60,12 +92,203 @@ body {
     font-weight: 400;
   }
 
+  hr.line {
+    height: 2px;
+    width: 100%;
+    margin: 4px auto;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+    background-color: $light;
+  }
+
   .guest-div {
     @include flex-box();
     justify-content: center;
     width: 100%;
     height: 100vh;
   }
+
+  // --------------------------------------------- LANDING PAGE ---------------------------------------------
+
+  .landing-page {
+    .landing-page-image-section {
+      width: 100%;
+      position: relative;
+      height: 100vh;
+      .image {
+        width: 100%;
+        height: 100%;
+        background: url("../images/landing5.jpg");
+        background-position: right;
+        background-attachment: fixed;
+        background-size: cover;
+      }
+      .layer {
+        background-color: rgba($dark, 0.5);
+        position: absolute;
+        z-index: 1000;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      .content {
+        background-color: $light;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba($light, 0.2);
+        color: $light;
+        padding: 50px;
+        position: absolute;
+        bottom: 15%;
+        right: 2%;
+        border-radius: 10px;
+        z-index: 1001;
+        backdrop-filter: blur(12px) saturate(180%);
+        -webkit-backdrop-filter: blur(12px) saturate(180%);
+      }
+    }
+
+    .how-it-works {
+      width: 100%;
+      height: 650px;
+      padding: 20px 0 80px 0;
+      background-color: $main;
+      @include flex-col();
+      justify-content: center;
+      .wrapper {
+        @include grid(3);
+        grid-column-gap: 70px;
+      }
+      .col {
+        margin-top: 50px;
+        background-color: $secondary;
+        padding: 15px 30px;
+        height: 300px;
+        @include flex-col();
+        justify-content: center;
+        .icon-div {
+          width: 70px;
+          height: 70px;
+          background-color: $main;
+          color: $light;
+          border-radius: 50%;
+          font-size: 2.6rem;
+          @include flex-box();
+          justify-content: center;
+        }
+      }
+    }
+
+    .top-categories {
+      width: 100%;
+      height: 700px;
+      padding: 20px 0 60px 0;
+      background-color: $light;
+      @include flex-box();
+      .wrapper {
+        width: 64%;
+      }
+      hr.line {
+        background-color: $main;
+        height: 4px;
+        margin: 10px auto;
+        width: 80% !important;
+      }
+      .content-left {
+        color: $main;
+      }
+      .content-right {
+        @include flex-box();
+        justify-content: center;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background-color: $main;
+        position: relative;
+        .icons {
+          position: absolute;
+          &.i1 {
+            top: 40%;
+            left: 80%;
+          }
+          &.i2 {
+            top: 32%;
+            left: 15%;
+          }
+          &.i3 {
+            top: 18%;
+            left: 76%;
+          }
+          &.i4 {
+            top: 80%;
+            left: 34%;
+          }
+          &.i5 {
+            top: 78%;
+            left: 60%;
+          }
+          &.i6 {
+            top: 10%;
+            left: 50%;
+          }
+          &.i7 {
+            top: 58%;
+            left: 10%;
+          }
+          &.i9 {
+            top: 15%;
+            left: 30%;
+          }
+          &.i8 {
+            top: 58%;
+            left: 77%;
+          }
+        }
+        svg {
+          font-size: 2rem;
+        }
+      }
+    }
+
+    .top-sellers {
+      width: 100%;
+      padding: 60px 0;
+      height: 800px;
+      background-color: $secondary;
+      hr.line {
+        margin-bottom: 50px;
+        width: 15%;
+        height: 4px;
+      }
+      .wrapper {
+        @include grid(3);
+        grid-column-gap: 50px;
+      }
+      img {
+        width: 400px;
+        border-radius: 5px;
+      }
+      .col {
+        height: 500px;
+        @include flex-col();
+        background-color: $main;
+        color: $light;
+        padding: 20px 30px;
+        svg {
+          color: rgb(241, 241, 0);
+          margin: 0 1px;
+        }
+      }
+    }
+    hr.line {
+      margin-bottom: 50px;
+      width: 15%;
+      height: 4px;
+    }
+  }
+
+  // --------------------------------------------- HEADER ---------------------------------------------
 
   header {
     width: 100%;
@@ -92,6 +315,24 @@ body {
     }
   }
 
+  .unauthorized-header {
+    height: 80px;
+    position: absolute;
+    z-index: 1002;
+    .small-image {
+      width: 70px !important;
+    }
+  }
+  .wishlist-nav-btn {
+    position: relative;
+    .wishlist-count {
+      position: absolute;
+      font-size: 0.8rem;
+      right: 4px;
+      top: -6px;
+    }
+  }
+
   nav {
     @include flex-box();
     ul {
@@ -100,11 +341,11 @@ body {
         margin: 0 3px;
 
         a {
-          color: $dark;
+          color: $light;
           @include transition(0.23s);
           transform: scale(1);
           display: inline-block;
-          padding: 4px 6px;
+          padding: 4px 3px;
           border-radius: 5px;
           &:hover {
             transform: scale(1.15);
@@ -117,7 +358,7 @@ body {
           font-size: 1.5rem;
           margin: 0 10px;
           a {
-            padding: 0;
+            padding: 1px 10px;
           }
         }
       }
@@ -134,11 +375,157 @@ body {
     }
   }
 
+  // --------------------------------------------- GLOBAL CLASSES ---------------------------------------------
+
+  .flexbox {
+    @include flex-box();
+  }
+
+  .flexcol {
+    @include flex-col();
+  }
+
+  .align-center {
+    align-items: center !important;
+  }
+  .align-start {
+    align-items: flex-start !important;
+  }
+  .align-end {
+    align-items: flex-end !important;
+  }
+  .justify-center {
+    justify-content: center !important;
+  }
+  .justify-start {
+    justify-content: flex-start !important;
+  }
+  .justify-end {
+    justify-content: flex-end !important;
+  }
+  .bold {
+    font-weight: 600;
+  }
+
+  /// ---------------------------------------------  FONTS ---------------------------------------------
+
+  .font-1 {
+    font-size: 0.8rem;
+  }
+  .font-2 {
+    font-size: 0.9rem;
+  }
+  .font-3 {
+    font-size: 1rem;
+  }
+  .font-4 {
+    font-size: 1.1rem;
+  }
+  .font-5 {
+    font-size: 1.2rem;
+  }
+  .font-6 {
+    font-size: 1.3rem;
+  }
+  .font-7 {
+    font-size: 1.4rem;
+  }
+  .font-8 {
+    font-size: 1.5rem;
+  }
+  .font-9 {
+    font-size: 1.6rem;
+  }
+  .font-10 {
+    font-size: 1.7rem;
+  }
+  .font-11 {
+    font-size: 2rem;
+  }
+  .font-12 {
+    font-size: 2.4rem;
+  }
+  .font-13 {
+    font-size: 2.8rem;
+  }
+  .font-14 {
+    font-size: 3.2rem;
+  }
+
+  .mgy-5 {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .mgy-4 {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  .pointer-none {
+    cursor: default;
+  }
+
+  // --------------------------------------------- BACKGROUNDS ---------------------------------------------
+
+  .back-primary {
+    background-color: $main !important;
+    color: $light !important;
+  }
+
+  .back-secondary {
+    background-color: $secondary !important;
+    color: $light !important;
+  }
+
+  .back-dark {
+    background-color: $dark !important;
+    color: $main !important;
+  }
+  .back-light {
+    background-color: $light !important;
+    color: $main !important;
+  }
+
+  // --------------------------------------------- FONT COLORS ---------------------------------------------
+
+  .font-primary {
+    color: $main !important;
+  }
+  .font-secondary {
+    color: $secondary !important;
+  }
+  .font-light {
+    color: $light !important;
+  }
+  .font-dark {
+    color: $dark !important;
+  }
+
+  .rounded {
+    border-radius: 5px;
+  }
+
+  .shadow-dark {
+    box-shadow: 0 0 5px $dark;
+  }
+  .shadow-light {
+    box-shadow: 0 0 5px $light;
+  }
+
   .bs-form-div {
-    background-color: $secondary;
-    padding: 80px 50px;
-    width: 700px;
-    border-radius: 10px;
+    background-color: transparent;
+    &.individual {
+      background-color: $main !important;
+      padding: 80px 50px;
+      width: 700px;
+      border-radius: 10px;
+    }
+
     @include flex-col();
     .bs-form {
       margin-top: 10px;
@@ -162,7 +549,8 @@ body {
         justify-content: center;
         margin: 25px 0 0 0;
         input,
-        select {
+        select,
+        textarea {
           width: 100%;
         }
 
@@ -171,16 +559,47 @@ body {
           transform: translateY(-27px);
         }
 
+        &.invalid-input-field input,
+        &.invalid-input-field select,
+        &.invalid-input-field textarea {
+          box-shadow: 0 0 5px $error;
+          border: 2px solid $error;
+        }
+
+        &.focused {
+          &:has(textarea) label {
+            transform: translateY(-33px);
+          }
+        }
+
+        &:has(textarea) label {
+          top: 10px;
+        }
+
         label {
-          color: $dark;
+          color: $secondary;
           position: absolute;
           @include transition(0.3s);
           margin-left: 12px;
         }
+
+        .fixed-label {
+          top: -23px;
+          color: $light;
+        }
       }
-      .submit-btn {
+
+      .form-btn {
         margin-top: 20px;
         width: 100%;
+      }
+      .submit-btn {
+        background-color: $secondary;
+        color: $light;
+        &:hover {
+          background-color: $light;
+          color: $secondary;
+        }
       }
       .show-password {
         color: $dark;
@@ -198,6 +617,114 @@ body {
       width: 100%;
     }
   }
+  .form-field {
+    position: relative;
+    @include flex-col();
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0;
+
+    width: 100%;
+    input {
+      width: 100%;
+    }
+
+    &.focused label {
+      color: $light;
+      transform: translateY(-27px);
+    }
+    label {
+      color: $secondary;
+      position: absolute;
+      @include transition(0.3s);
+      margin-left: 12px;
+    }
+
+    .fixed-label {
+      top: -23px;
+      color: $light;
+    }
+  }
+
+  .primary {
+    background-color: $main !important;
+    color: $light !important;
+    &:hover {
+      background-color: $light !important;
+      color: $main !important;
+    }
+  }
+  .secondary {
+    background-color: $secondary !important;
+    color: $light !important;
+    &:hover {
+      background-color: $light !important;
+      color: $secondary !important;
+    }
+  }
+
+  .light {
+    background-color: $light !important;
+    color: $main !important;
+    &:hover {
+      background-color: $main !important;
+      color: $light !important;
+    }
+  }
+
+  .red {
+    background-color: $red !important;
+    color: $dark !important;
+    &:hover {
+      background-color: $dark !important;
+      color: $red !important;
+    }
+  }
+
+  .success-btn {
+    background-color: $success;
+    color: $light;
+    &:hover {
+      background-color: $light !important;
+      color: $secondary !important;
+    }
+  }
+  .error-btn {
+    background-color: $error;
+    color: $dark;
+    &:hover {
+      background-color: $light !important;
+      color: $error !important;
+    }
+  }
+
+  ::file-selector-button {
+    background-color: $secondary;
+    padding: 2px 12px;
+    border-radius: 5px;
+    color: $light;
+  }
+
+  main {
+    padding: 40px 0;
+    .wrapper {
+      min-height: 55vh;
+      background-color: $light;
+      .create-auction {
+        height: 100%;
+        @include flex-col();
+        .bs-form-div {
+          background-color: $main;
+          padding: 60px 100px;
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          @include flex-col();
+          justify-content: center;
+        }
+      }
+    }
+  }
 
   .code-verification-div {
     form {
@@ -210,9 +737,11 @@ body {
       margin: 10px auto;
       width: 100%;
       .code-input {
-        width: 30px;
+        width: 50px;
+        @include flex-box();
+        justify-content: center;
         font-size: 2rem;
-        padding: 2px 5px;
+        text-align: center;
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
           -webkit-appearance: none;
@@ -232,13 +761,14 @@ body {
     width: 100%;
     border-radius: 5px;
     background-color: $dark;
-    padding: 4px 6px;
+    padding: 4px 12px;
     margin-top: 10px;
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   input,
-  select {
+  select,
+  textarea {
     background-color: $light;
     color: $dark;
     padding: 5px 12px;
@@ -251,6 +781,10 @@ body {
     &:focus {
       box-shadow: 0 0 7px $light;
     }
+  }
+
+  select {
+    padding: 6px 12px;
   }
 
   input[type="submit"],
@@ -266,9 +800,497 @@ body {
     padding: 5px 12px;
     &:hover {
       color: $light;
-      background-color: $dark;
+      background-color: $secondary;
     }
   }
+  button.long-padding {
+    padding: 5px 26px;
+  }
+
+  .small-button {
+    padding: 2px 4px;
+    font-size: 0.9rem;
+    margin: 4px;
+  }
+
+  // --------------------------------------------- FOOTER ---------------------------------------------
+
+  footer {
+    background-color: $main;
+    width: 100%;
+    min-height: 170px;
+    padding: 20px 0;
+    .wrapper {
+      @include flex-box();
+      .contact-footer {
+        @include flex-col();
+        h4 {
+          background-color: $secondary;
+          color: $light;
+          padding: 4px 8px;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+
+  // --------------------------------------------- BUTTONS ---------------------------------------------
+
+  .btns {
+    @include flex-box();
+    justify-content: center;
+    button {
+      margin: 0 5px;
+    }
+  }
+
+  .dependent-btns {
+    @include flex-box();
+    width: 100%;
+    justify-content: flex-end;
+    .form-btn {
+      width: 10% !important;
+      margin: 0 6px;
+      margin-top: 10px !important;
+    }
+  }
+
+  // ------------------------------------------------- IMAGES ------------------------------------------------------
+
+  .image-element {
+    border-radius: 4px;
+    object-fit: contain;
+  }
+  .image-container {
+    width: 100%;
+    height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: $secondary;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain !important;
+    border-radius: 5px !important;
+  }
+  .small-image {
+    width: 80px !important;
+  }
+  .image-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 5px;
+    margin: 10px 0;
+    .single-image {
+      border-radius: 5px;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+      button {
+        position: absolute;
+        right: 1px;
+        top: 1px;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  // ---------------------------------------------- STRUCTURE ---------------------------------------------
+
+  .container {
+    width: 100%;
+    background-color: $main;
+    padding: 70px 30px;
+    @include flex-col();
+    border-radius: 5px;
+    box-shadow: 0 0 5px $dark;
+  }
+
+  // --------------------------------------------- AUCTIONS --------------------------------------------------
+
+  .auction-grid {
+    padding-left: 30px;
+    padding-right: 30px;
+    .structure-select {
+      width: 150px;
+    }
+  }
+
+  .auction-cards-div {
+    margin-top: 40px;
+    @include grid(4);
+    align-items: stretch;
+    .auction-card {
+      @include flex-col();
+      background-color: $light;
+      color: $main;
+      border-radius: 5px;
+      box-shadow: 0 0 5px $secondary;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+      .upper-card {
+        padding-top: 4px;
+        padding-bottom: 15px;
+        width: 100%;
+        min-height: 130px;
+      }
+      .card-image-div {
+        width: 100%;
+        height: 250px;
+        position: relative;
+        border-radius: 5px 5px 0 0;
+        .image {
+          width: 100%;
+          height: 100%;
+        }
+        .image-element {
+          width: 100%;
+          height: 100%;
+          border-radius: 5px 5px 0 0;
+        }
+        .info {
+          position: absolute;
+          top: 0;
+          right: 0;
+          background-color: $secondary;
+          padding: 5px 10px;
+          border-radius: 4px;
+          font-size: 1rem;
+          color: $light;
+          @include flex-col();
+          .info-text {
+            @include flex-box();
+            p {
+              margin-left: 5px;
+            }
+          }
+        }
+      }
+      .auction-card-button {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .auction-cards-rows {
+    margin-top: 40px;
+    .auction-card {
+      margin: 20px 0;
+      background-color: $secondary;
+      @include transition(0.2s);
+      @include flex-box();
+      color: $main;
+      border-radius: 5px;
+      box-shadow: 0 0 5px $secondary;
+      padding: 10px 20px;
+      .font-light {
+        @include transition(0.2s);
+      }
+      &:hover {
+        background-color: $light;
+        .font-light {
+          color: $main !important;
+        }
+      }
+      .card-image-div {
+        position: relative;
+      }
+      .image-element {
+        width: 120px;
+        height: 70px;
+        border-radius: 5px;
+      }
+    }
+  }
+  .auction-details {
+    .wrapper {
+      width: 90%;
+      @include flex-col();
+      justify-content: space-between;
+      background-color: transparent;
+      .details-div {
+        width: 100%;
+        align-items: stretch;
+        margin-bottom: 40px;
+
+        .right-details {
+          width: 480px;
+          & > div {
+            width: 100%;
+          }
+        }
+        .auction-details {
+          width: 800px;
+          padding: 40px 30px;
+          position: relative;
+          @include flex-col();
+          .main-image {
+            width: 100%;
+            .image-element {
+              width: 100%;
+            }
+          }
+          .auction-text {
+            width: 92%;
+          }
+          .image-grid {
+            .single-image {
+              // width: 100px;
+              height: 120px;
+            }
+          }
+          .add-to-wishlist-div {
+            position: absolute;
+            right: 1%;
+          }
+        }
+
+        .auction-bidding {
+          padding: 25px 30px;
+          margin-bottom: 30px;
+        }
+        .seller-info {
+          padding: 50px;
+          width: 500px;
+          min-height: 400px;
+        }
+      }
+
+      .recommended-items {
+        width: 100%;
+        margin-top: 50px;
+        padding: 50px 60px;
+        .auction-cards-div {
+          @include grid(3);
+          align-items: stretch;
+          grid-column-gap: 50px;
+        }
+      }
+
+      .bid-history {
+        background-color: $main;
+        padding: 30px 50px 0 50px;
+        .wrapper {
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+
+  .timer {
+    padding: 0 20px;
+  }
+
+  .profile {
+    .form-wrapper {
+      width: 70%;
+    }
+  }
+
+  .pagination {
+    padding: 4px 12px;
+  }
+
+  .simple-btn {
+    background-color: transparent;
+    box-shadow: none;
+    color: $main;
+    padding: 2px 5px;
+
+    &:hover {
+      background-color: transparent;
+      color: $secondary;
+    }
+    &.font-secondary:hover {
+      color: $main;
+    }
+  }
+
+  // --------------------------------------------- DASHBOARD ---------------------------------------------
+
+  .admin-main {
+    position: relative;
+    left: 340px;
+    width: calc(100vw - 360px);
+  }
+
+  .dashboard-sidebar {
+    position: absolute;
+    left: 0;
+    top: 160px;
+    bottom: 0;
+    min-width: 340px;
+    border-radius: 0 5px 0 0;
+    // height: 100%;
+    background-color: $main;
+  }
+
+  // ------------------------------- TABLES ---------------------------------------
+
+  .auction-list {
+    border-collapse: separate; /* Obavezno ovo */
+    border-spacing: 0 35px;
+    thead {
+      tr {
+        background-color: $dark;
+        color: $light;
+      }
+    }
+    tbody {
+      color: $main;
+      tr {
+        @include transition(0.3s);
+        border-radius: 20px;
+      }
+      tr {
+        background-color: $secondary;
+        .font-light {
+          @include transition(0.3s);
+        }
+        td:first-child {
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+        }
+
+        td:last-child {
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
+      }
+      tr:hover {
+        background-color: $light;
+        color: $main;
+        .font-light {
+          color: $main !important;
+        }
+      }
+    }
+    td,
+    th {
+      text-align: center;
+      padding: 8px 16px;
+      @include transition(0.3s); // border: 1px solid $light;
+      &align-right {
+        text-align: right;
+      }
+    }
+    img {
+      width: 120px;
+      height: 80px;
+      box-shadow: 0 0 4px $dark;
+    }
+  }
+
+  .generic-table {
+    min-width: 800px;
+    border-radius: 5px;
+    background-color: $light;
+    color: $dark;
+    border: 1px solid $light;
+    border-collapse: collapse;
+    box-shadow: 0 0 5px $light;
+    thead {
+      tr {
+        background-color: $dark;
+        color: $light;
+      }
+    }
+    tbody {
+      tr {
+        @include transition(0.3s);
+      }
+      tr:nth-of-type(odd) {
+        background-color: $main;
+        color: $light;
+      }
+      tr:nth-of-type(even) {
+        background-color: $secondary;
+        color: $light;
+      }
+      tr:hover {
+        background-color: $light;
+        color: $main;
+      }
+    }
+    &.light {
+      border: 1px solid $dark;
+      border-collapse: collapse;
+      box-shadow: 0 0 5px $dark;
+      td,
+      th {
+        border: 1px solid $dark;
+      }
+      thead {
+        tr {
+          background-color: $main;
+          color: $light;
+        }
+      }
+      tbody {
+        tr {
+          color: $dark;
+          @include transition(0.3s);
+          background-color: $light;
+        }
+        tr:hover {
+          background-color: $main;
+          color: $light;
+          td,
+          th {
+            border: 1px solid $dark;
+          }
+        }
+      }
+    }
+    &.dark {
+      border: 1px solid $light;
+      border-collapse: collapse;
+      box-shadow: 0 0 5px $light;
+      td,
+      th {
+        border: 1px solid $light;
+      }
+      thead {
+        tr {
+          background-color: $main;
+          color: $light;
+        }
+      }
+      tbody {
+        tr {
+          @include transition(0.3s);
+          background-color: $dark;
+        }
+        tr:hover {
+          background-color: $light;
+          color: $main;
+          td,
+          th {
+            border: 1px solid $dark;
+          }
+        }
+      }
+    }
+    td,
+    th {
+      text-align: center;
+      padding: 12px 25px;
+      @include transition(0.3s); // border: 1px solid $light;
+      &align-right {
+        text-align: right;
+      }
+    }
+  }
+
+  //--------------------------------------- ADDITIONAL -----------------------------------------
 
   .spinner-div {
     background-color: $dark;
@@ -294,29 +1316,176 @@ body {
     opacity: 1;
   }
 
-  footer {
-    background-color: $main;
-    width: 100%;
-    min-height: 170px;
-    padding: 20px 0;
-    .wrapper {
-      @include flex-box();
+  .dialog-div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba($dark, 0.8);
+    @include flex-box();
+    justify-content: center;
+    .dialog {
+      background-color: $main;
+      box-shadow: 0 0 5px $dark;
+      min-width: 600px;
+      height: 300px;
+      @include flex-col();
+      border-radius: 7px;
+      .header {
+        padding: 5px 15px;
+        border-radius: 7px 7px 0 0;
+        background-color: $light;
+        color: $secondary;
+        width: 100%;
+        @include flex-box();
+      }
+      .content {
+        position: relative;
+        @include flex-col();
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        .text {
+          font-size: 1.1rem;
+        }
+        .btns {
+          position: absolute;
+          right: 2%;
+          bottom: 4%;
+        }
+      }
     }
   }
 
+  .tooltip {
+    @include flex-box();
+    position: relative;
+    .tooltip-title {
+      position: absolute;
+      min-width: 250px;
+      @include flex-box();
+      justify-content: center;
+      border-radius: 5px;
+      background-color: $light;
+      color: $main;
+      font-size: 1rem;
+      box-shadow: 0 0 8px $dark;
+      border: 1px solid $dark;
+      padding: 6px 4px;
+      z-index: 1000;
+      pointer-events: none;
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    70% {
+      transform: scale(1.05);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $light;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $main;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: $dark;
+  }
+
+  .go-to-top {
+    background-color: $secondary;
+    color: $main;
+    width: 80px;
+    height: 80px;
+    @include flex-box();
+    justify-content: center;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px $dark;
+    .simple-btn {
+      font-size: 3rem;
+      @include flex-col();
+      span {
+        position: absolute;
+        top: 5px;
+      }
+      span:nth-of-type(1) {
+        top: -12px;
+      }
+      span:nth-of-type(2) {
+        top: 22px;
+      }
+      &:hover {
+        color: $light;
+      }
+    }
+  }
+
+  .go-to-top:hover .fa-angle-up {
+    animation: slideUp 0.7s infinite;
+  }
+
+  @keyframes slideUp {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+  }
+
+  .primary.no-hover:hover {
+    background-color: $main !important;
+    color: white !important;
+  }
+
+  .light.no-hover:hover {
+    background-color: $light !important;
+    color: $main !important;
+  }
+
+  .secondary.no-hover:hover {
+    background-color: $secondary !important;
+    color: $light !important;
+  }
+
   .toast-div {
-    position: absolute;
+    position: fixed;
     right: 1%;
     bottom: 2%;
     padding: 6px 14px;
     border-radius: 5px;
-    color: $dark;
+    color: $light;
     &.toast-color-success {
       background-color: $success;
     }
     &.toast-color-error {
       background-color: $error;
-      color: $light;
+      color: $dark;
     }
     &.toast-color-warning {
       background-color: $warning;

@@ -37,8 +37,8 @@ const SocialLinks = () => {
     <nav className="socials">
       <ul>
         {links.map((link) => (
-          <li className="social-link" key={link.path}>
-            <Link target="_blank" to={link.path}>
+          <li className="social-link " key={link.path}>
+            <Link className="primary" target="_blank" to={link.path}>
               <FontAwesomeIcon icon={link.icon} />
             </Link>
           </li>

@@ -1,7 +1,5 @@
-import { useState } from "react";
 import {
   get,
-  useFormContext,
   type FieldErrors,
   type FieldValues,
   type Path,
@@ -13,6 +11,7 @@ type DatePickerProps<T extends FieldValues> = {
   label: string;
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
+  dateTimeType: "date" | "datetime-local" | "";
 };
 
 // ZA OVO IMA REACT DATE PICKER
@@ -21,28 +20,28 @@ const DatePicker = <T extends FieldValues>({
   label,
   register,
   errors,
+  dateTimeType,
 }: DatePickerProps<T>) => {
   const error = get(errors, name);
-  const { watch } = useFormContext<T>();
-  const val = watch(name);
-  const [focused, setFocused] = useState(!!val);
 
   return (
     <>
-      <div className={(focused ? "focused" : "") + " form-field"}>
-        <label htmlFor={String(name)}>{label}: </label>
+      <div className={"form-field" + (error ? " invalid-input-field" : "")}>
+        <label htmlFor={String(name)} className="fixed-label ">
+          {label}:{" "}
+        </label>
         <input
-          type="date"
+          type={dateTimeType ?? "date"}
           {...register(name)}
           name={String(name)}
           id={String(name)}
-          onFocus={() => setFocused(true)}
-          onBlur={(e) => {
-            if (!e.currentTarget.value) setFocused(false);
-          }}
         />
       </div>
-      {error && <div className="error-message">{error.message as string}</div>}
+      {error && (
+        <div className="error-message">
+          {Array.isArray(error) ? error[0]?.message : (error.message as string)}
+        </div>
+      )}
     </>
   );
 };

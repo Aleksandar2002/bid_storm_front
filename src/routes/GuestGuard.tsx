@@ -3,7 +3,6 @@ import { useAuthStore } from "../app/stores/authStore";
 
 function GuestGuard() {
   const user = useAuthStore((state) => state.user);
-  console.log(user);
 
   if (user) {
     return <Navigate to="/" />;

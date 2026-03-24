@@ -1,8 +1,8 @@
 import { useState, type ChangeEvent, type KeyboardEvent } from "react";
 import { verifyAccessCode } from "../../app/services/authService";
 import { handleSuccessfulLogin } from "../../shared/utils/authHelper";
-import { useToast } from "../../shared/hooks/useToast";
 import { useNavigate } from "react-router";
+import { useToast } from "../../app/stores/toastMessageStore";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const AccessCodeVerification = () => {
@@ -19,18 +19,15 @@ const AccessCodeVerification = () => {
     if (!/^[0-9A-z]{6}$/.test(codeStr)) {
       setError("Must contains 6 number digits");
     }
-    console.log(codeStr);
-
     try {
       const resp = await verifyAccessCode(codeStr);
-      console.log(resp);
       if (resp && resp.status == 204) {
         handleSuccessfulLogin(setSuccessToast, navigate);
       }
     } catch (err: any) {
       console.log(err.response);
 
-      if (err?.response && err.response.status == 401) {
+      if (err?.response && err.response.status == 400) {
         setErrorToast(err.response.data?.message ?? "Unauthorized error");
       } else {
         setErrorToast("Some error happened during verification");
