@@ -4,7 +4,7 @@ export type SortingType = {
   sortingType: string;
 };
 
-export const sortingOptions: ISelectOption[] = [
+export const auctionSortingOptions: ISelectOption[] = [
   {
     title: "Newest first",
     value: "CreatedAt-desc",

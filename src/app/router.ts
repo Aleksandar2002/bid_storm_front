@@ -18,6 +18,8 @@ import MyAuctions from "../features/AuctionsView/MyAuctions";
 import AuctionDetails from "../features/AuctionDetails/AuctionDetails";
 import Wishlist from "../features/User/Wishlist/Wishlist";
 import LandingPage from "../features/LandingPage/LandingPage";
+import DashboardForm from "../features/DashboardForm/DashboardForm";
+import Notifications from "../features/Notifications/Notifications";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +86,10 @@ const router = createBrowserRouter([
                 path: "/wishlist",
                 Component: Wishlist,
               },
+              {
+                path: "/notifications",
+                Component: Notifications,
+              },
             ],
           },
           {
@@ -91,7 +97,13 @@ const router = createBrowserRouter([
             children: [
               {
                 Component: AdminLayout,
-                children: [{ path: "/dashboard", Component: Dashboard }],
+                children: [
+                  { path: "/dashboard", Component: Dashboard },
+                  {
+                    path: "/dashboard/form",
+                    Component: DashboardForm,
+                  },
+                ],
               },
             ],
           },

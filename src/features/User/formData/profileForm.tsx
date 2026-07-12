@@ -48,6 +48,15 @@ export const schema = z.object({
     .string()
     .regex(/^(\+?\d{1,3}[- ]?)?\d{7,15}$/, "Invalid phone number format"),
   placeId: z.number().gt(0, "You need to choose city."),
+  avatar: z
+    .array(
+      z.string({
+        message: "Every image must be a string",
+      }),
+    )
+    .max(1, { message: "Only one image allowed" })
+    .nullable()
+    .optional(),
 });
 
 export type FormType = z.infer<typeof schema>;
@@ -133,5 +142,13 @@ export const fields: Array<IFormField<FormType>> = [
     name: "apartmentNumber",
     type: "textField",
     cols: 24,
+  },
+  {
+    label: "Avatar",
+    name: "avatar",
+    type: "file",
+    cols: 50,
+    accept: "image/png, image/jpeg, image/jpg, image/webp",
+    multiple: false,
   },
 ];

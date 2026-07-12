@@ -35,6 +35,7 @@ const AuctionBidHistory = ({ auctionId }: AuctionBidHistory) => {
               cols={cols}
               rows={bids}
               tableClass={"light"}
+              restrictions={{ shouldRowNumberBeVisible: true }}
             />
           ) : (
             <h2 className="font-14 bold mt-20 back-light rounded shadow-dark px-10 py-4">

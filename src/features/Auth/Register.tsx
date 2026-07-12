@@ -66,6 +66,7 @@ function Register() {
           validation={registerSchema}
           onSubmitAction={handleFormSubmit}
           defaultValues={defaultValues}
+          method="Post"
         >
           <p className="text-center m-4 additional-form-text">
             Already have an account? Login <Link to="/login">HERE</Link>

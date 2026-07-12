@@ -11,7 +11,7 @@ const ChangeGridStructureButtons = ({
   value,
 }: ChangeGridStructureButtonsProps) => {
   return (
-    <>
+    <div className="mr-2">
       <Button
         btnClass={"mr-2 " + (value == 2 ? "back-secondary" : "")}
         handleClickFunction={() => onChange(2)}
@@ -24,7 +24,7 @@ const ChangeGridStructureButtons = ({
       >
         <FontAwesomeIcon icon={"bars"} />
       </Button>
-    </>
+    </div>
   );
 };
 

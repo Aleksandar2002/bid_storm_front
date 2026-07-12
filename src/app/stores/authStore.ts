@@ -8,6 +8,8 @@ type User = {
   role: string;
   isSuperAdmin: boolean;
   allowedUseCases: UseCaseId[];
+  avatar: string;
+  username: string;
 };
 
 type AuthState = {

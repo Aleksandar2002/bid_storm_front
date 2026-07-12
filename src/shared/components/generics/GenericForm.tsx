@@ -28,6 +28,7 @@ type FormEndpoints = {
   add?: string;
   update?: string;
   delete?: string;
+  default?: string;
 };
 type FormProps<T extends z.ZodObject<any>> = {
   title?: string;
@@ -39,12 +40,14 @@ type FormProps<T extends z.ZodObject<any>> = {
   defaultValues?: Partial<z.infer<T>>;
   children?: React.ReactNode;
   endpoints?: FormEndpoints;
+  method: "Post" | "Put" | "Get";
   shouldConfirmSubmit?: boolean;
   onSuccess?: (resp: any) => void;
   onError?: (error: any) => void;
   isIndependent?: boolean;
   shouldResetAfterSubmit?: boolean;
   isFullBtnsWidth?: boolean;
+  formClass?: string;
 };
 
 const GenericForm = <T extends z.ZodObject<any>>({
@@ -57,12 +60,14 @@ const GenericForm = <T extends z.ZodObject<any>>({
   defaultValues,
   children,
   endpoints,
+  method,
   shouldConfirmSubmit,
   onSuccess,
   onError,
   isIndependent = true,
   shouldResetAfterSubmit = true,
   isFullBtnsWidth = false,
+  formClass,
 }: FormProps<T>) => {
   // KLJUČ: Eksplicitno reci da je FormData tipa FieldValues
   type FormData = z.infer<T> & FieldValues;
@@ -95,36 +100,35 @@ const GenericForm = <T extends z.ZodObject<any>>({
   };
 
   const submit = async (data: FormData) => {
-    console.log(data);
-
     setServerErrors(undefined);
     try {
       if (endpoints) {
         let resp;
-        if (endpoints.search) {
-          if (endpoints.search) {
-            const filteredEntries = Object.entries(data).filter(([, value]) => {
-              return (
-                value !== "" &&
-                value !== null &&
-                value !== undefined &&
-                value !== 0
-              );
-            });
+        if (method == "Get") {
+          const url = endpoints.search ?? endpoints.default;
+          if (!url) return;
+          const filteredEntries = Object.entries(data).filter(([, value]) => {
+            return (
+              value !== "" &&
+              value !== null &&
+              value !== undefined &&
+              value !== 0
+            );
+          });
 
-            const cleanParams = Object.fromEntries(filteredEntries);
-            resp = await api.get(endpoints.search, { params: cleanParams });
-          }
+          const cleanParams = Object.fromEntries(filteredEntries);
+          resp = await api.get(url, { params: cleanParams });
         }
-        if (endpoints.add) {
-          resp = await api.post(endpoints.add, data);
+        if (method == "Post") {
+          const url = endpoints.add ?? endpoints.default;
+          if (!url) return;
+          resp = await api.post(url, data);
         }
-        if (endpoints.delete) {
-          resp = await api.delete(endpoints.delete, data);
-        }
-        // OVO NIJE POTPUNO ISPRAVNO
-        if (endpoints.update) {
-          resp = await api.put(endpoints.update, data);
+        // OVO NIJE POTPUNO ISPRAVNO, nisam sig zasto
+        if (method == "Put") {
+          const url = endpoints.update ?? endpoints.default;
+          if (!url) return;
+          resp = await api.put(url, data);
         }
         if (shouldResetAfterSubmit) methods.reset();
         if (onSuccess) onSuccess(resp);
@@ -287,7 +291,13 @@ const GenericForm = <T extends z.ZodObject<any>>({
 
   return (
     <FormProvider {...methods}>
-      <div className={"bs-form-div " + (isIndependent ? " individual" : "")}>
+      <div
+        className={
+          "bs-form-div " +
+          (isIndependent ? " individual" : "") +
+          (formClass ? formClass : "")
+        }
+      >
         {title && <h2>{title}</h2>}
         <form
           ref={formRef}

@@ -21,9 +21,14 @@ const SingleImage = ({
 
   const [isDefaultImage, setIsDefaultImage] = useState<boolean>(false);
 
-  const handleImageError = () => {
-    console.log("error");
+  const getBasePath = (src: string) => {
+    if (src.startsWith("products/") || src.startsWith("users/")) {
+      return PATHS.GET_FILE(src);
+    }
+    return basePath(src);
+  };
 
+  const handleImageError = () => {
     setIsDefaultImage(true);
   };
 
@@ -38,7 +43,7 @@ const SingleImage = ({
             objectPosition: "center",
           }}
           className={"image-element " + (imageClass ? imageClass : "")}
-          src={basePath(image.src)}
+          src={getBasePath(image.src)}
           alt={image.alt}
           onError={handleImageError}
         />

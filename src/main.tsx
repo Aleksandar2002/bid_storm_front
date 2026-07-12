@@ -5,9 +5,17 @@ import "./assets/styles/global.scss";
 import { RouterProvider } from "react-router/dom";
 import router from "./app/router.ts";
 import "./shared/icons/icons.ts";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HubsProvider } from "./shared/hubs/hubsContext.tsx";
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <HubsProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </HubsProvider>
   </StrictMode>,
 );

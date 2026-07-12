@@ -26,3 +26,18 @@ export const formatDate = (
 
   return new Intl.DateTimeFormat("en-GB", options).format(date);
 };
+
+export const formatDateForInput = (dateString: string) => {
+  if (!dateString) return "";
+  return dateString.split(".")[0].slice(0, 16);
+};
+
+export const parseDate = (data: string | Date) => {
+  const date = data instanceof Date ? data : new Date(data);
+
+  if (isNaN(date.getTime())) {
+    console.error("Invalid date provided:", data);
+    return;
+  }
+  return date;
+};

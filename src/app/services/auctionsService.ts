@@ -14,6 +14,10 @@ export const getAuctionById = async (id: number) => {
   return await api.get("auctions/" + id);
 };
 
+export const markAuctionAsSeen = async (id: number) => {
+  return await api.post("auctions/auctionHasBeenSeen/" + id);
+};
+
 export type PlaceBIdDto = {
   auctionId: number;
   bid: number;

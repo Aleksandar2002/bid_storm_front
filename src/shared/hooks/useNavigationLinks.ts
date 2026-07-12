@@ -18,15 +18,11 @@ export const useNavigationLinks: () => NavigationLink[] = () => {
       title: "Auctions",
     },
     {
-      path: "/profile",
-      title: "My profile",
-    },
-    {
       path: "/myAuctions",
       title: "My Auctions",
     },
     {
-      path: "/dashboard",
+      path: "/dashboard?entity=auction",
       title: "Dashboard",
       role: "Admin",
     },

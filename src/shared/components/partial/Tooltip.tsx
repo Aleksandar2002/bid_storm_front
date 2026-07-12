@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 type TooltipProps = {
   children: ReactNode;
@@ -31,7 +31,7 @@ const Tooltip = ({
           className={"tooltip-title " + className || ""}
           style={{ bottom: bottomSpacing, left: leftSpacing }}
         >
-          {title}
+          <pre>{title}</pre>
         </div>
       )}
       <div>{children}</div>

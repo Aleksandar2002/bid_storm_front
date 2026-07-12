@@ -4,6 +4,8 @@ import Footer from "../shared/components/global/Footer";
 import SharedGlobalComponents from "./SharedGlobalComponents";
 import { useEffect } from "react";
 import { useWishlistStore } from "../app/stores/wishlistStore";
+import NotificationContext from "../features/Notifications/NotificationContext";
+
 function UserLayout() {
   useEffect(() => {
     const wishlistStore = useWishlistStore.getState();
@@ -19,6 +21,7 @@ function UserLayout() {
         </div>
       </main>
       <Footer />
+      <NotificationContext />
       <SharedGlobalComponents />
     </div>
   );

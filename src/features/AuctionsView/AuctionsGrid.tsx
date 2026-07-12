@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Auction } from "../../types/Auction";
 import AuctionCard from "./AuctionCard";
 import ChangeGridStructureButtons from "./ChangeGridStructureButtons";
@@ -10,10 +10,11 @@ import api from "../../api/axios";
 import Pagination from "../../shared/components/partial/Pagination";
 import { usePaginationStore } from "../../app/stores/paginationStore";
 import { useSearchParams } from "react-router";
-import { sortingOptions, type SortingType } from "./data/sortingOptions";
-import Select from "../../shared/components/form/Select";
+import { auctionSortingOptions } from "./data/sortingOptions";
 import { useSearchStore } from "../../app/stores/searchStore";
 import AuctionList from "./AuctionList";
+import { makeCleanSearchParams } from "../../shared/utils/requestHelper";
+import SortingSelect from "../../shared/components/partial/SortingSelect";
 
 type AuctionsGridProp = {
   title?: string;
@@ -67,13 +68,7 @@ const AuctionsGrid = ({
   // FETCHING DATA
   useEffect(() => {
     const fetchAuctions = async () => {
-      const filteredEntries = Object.entries(filters).filter(([, value]) => {
-        return (
-          value !== "" && value !== null && value !== undefined && value !== 0
-        );
-      });
-
-      const cleanParams = Object.fromEntries(filteredEntries);
+      const cleanParams = makeCleanSearchParams(filters);
 
       if (keyword) {
         cleanParams["keyword"] = keyword;
@@ -88,6 +83,7 @@ const AuctionsGrid = ({
           page: currentPage,
           perPage: 24,
           sorts: [sorting],
+          paginate: true,
         },
         paramsSerializer: {
           indexes: null, // Ovo uklanja []
@@ -142,14 +138,10 @@ const AuctionsGrid = ({
             value={structure}
             onChange={handleStructureChange}
           />
-          <Select<SortingType>
-            value={String(sorting)}
-            name={"sortingType"}
+          <SortingSelect
+            options={auctionSortingOptions}
+            defaultValue={String(sorting)}
             onChange={handleSortingChange}
-            options={sortingOptions}
-            hasDefaultOption={false}
-            selectClass="structure-select ml-5"
-            shouldReturnNumber={false}
           />
         </div>
       </div>

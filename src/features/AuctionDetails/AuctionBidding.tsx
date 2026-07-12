@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "../../shared/components/form/TextField";
 import { useToast } from "../../app/stores/toastMessageStore";
 import Button from "../../shared/components/global/Button";
@@ -7,9 +7,8 @@ import SmallButton from "../../shared/components/global/SmallButton";
 import type { Auction } from "../../types/Auction";
 import Timer from "../../shared/components/partial/Timer";
 import { formatDate } from "../../shared/utils/dateHelper";
-import * as signalR from "@microsoft/signalr";
-import { BACK_BASE_URL } from "../../constants/paths";
 import { placeBid } from "../../app/services/auctionsService";
+import { useHubs } from "../../shared/hubs/useHubs";
 
 type AuctionFormType = {
   bidValue: number;
@@ -17,19 +16,24 @@ type AuctionFormType = {
 
 type AuctionBiddingProps = {
   auction: Auction;
+  onPriceChange: (x: number) => void;
+  isExpiredProp: boolean;
 };
 
-const AuctionBidding = ({ auction }: AuctionBiddingProps) => {
+const AuctionBidding = ({
+  auction,
+  onPriceChange,
+  isExpiredProp,
+}: AuctionBiddingProps) => {
   const [currentPrice, setCurrentPrice] = useState<number>(
     auction.currentPrice,
   );
-  const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [biddingValue, setBiddingValue] = useState<string>(
     String(auction.currentPrice + auction.minimumStep),
   );
   const [bidError, setBidError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const { setErrorToast } = useToast();
+  const { setErrorToast, setSuccessToast } = useToast();
   const [expired, setExpired] = useState<boolean>(false);
   const btnValues = [1, 1.1, 1.2, 1.5, 2, 3];
 
@@ -42,43 +46,30 @@ const AuctionBidding = ({ auction }: AuctionBiddingProps) => {
   };
   const smallBtnsValues = buildSmallBtnsArray();
 
+  const { auctionsHub } = useHubs();
+
   useEffect(() => {
-    if (connectionRef.current) {
-      connectionRef.current.stop();
-    }
-
-    const connection = new signalR.HubConnectionBuilder()
-      .withUrl(BACK_BASE_URL + "/auctionHub")
-      .withAutomaticReconnect()
-      .build();
-
-    connectionRef.current = connection;
+    const handlePriceChanged = (data: any) => {
+      console.log("NEW PRICE:", data);
+      setCurrentPrice(data.newPrice);
+      onPriceChange(data.newPrice);
+    };
 
     const startConnection = async () => {
       try {
-        await connection.start();
         console.log("Connected to auction hub");
-
-        await connection.invoke("JoinAuction", auction.id);
-
-        connection.on("AuctionPriceChanged", (data) => {
-          console.log("NEW PRICE:", data);
-          setCurrentPrice(data.newPrice);
-        });
+        await auctionsHub?.invoke("JoinAuction", auction.id);
+        auctionsHub?.on("AuctionPriceChanged", handlePriceChanged);
       } catch (err) {
         console.error("SignalR connection failed:", err);
       }
     };
-
     startConnection();
 
     return () => {
-      if (connectionRef.current) {
-        connectionRef.current.stop();
-        connectionRef.current = null;
-      }
+      if (auctionsHub) auctionsHub?.off("AuctionPriceChanged");
     };
-  }, [auction.id]);
+  }, [auction.id, auctionsHub, onPriceChange]);
 
   useEffect(() => {
     const reset = () => {
@@ -117,21 +108,20 @@ const AuctionBidding = ({ auction }: AuctionBiddingProps) => {
       );
       return;
     }
-    // SLANJE PREKO SOCKETA, ALI BOLJE JE PREKO OBICNOG HTTP
-    // if (connectionRef.current) {
-    //   connectionRef.current.invoke("PlaceBid", {
-    //     bid: biddingValue,
-    //     auctionId: auction.id,
-    //   });
-    // }
     try {
       await placeBid({
         auctionId: auction.id,
         bid: Number(biddingValue),
       });
+      setSuccessToast("Bid placed successfully");
     } catch (err: any) {
       if (err && err.response && err.response.status == 422) {
-        setBidError(err.response?.data?.[0].error);
+        console.log(err.response);
+        if (err.response?.data?.[0]?.error) {
+          setBidError(err.response.data?.[0].error);
+        } else {
+          setBidError(err.response?.data?.message);
+        }
       } else {
         setErrorToast("Some error happened while placing a bid");
       }
@@ -139,16 +129,18 @@ const AuctionBidding = ({ auction }: AuctionBiddingProps) => {
     setLoading(false);
   };
   const handleQuickActionsClick = (val: number) => {
-    setBiddingValue(String(currentPrice + val));
+    const newValue = currentPrice + val;
+    setBiddingValue(newValue.toFixed(2));
   };
-
   const handleExpired = () => {
     setExpired(true);
   };
 
   return (
     <div className="auction-bidding back-secondary rounded shadow-dark font-dark">
-      <Timer endDate={new Date(auction.endsAt)} onExpiring={handleExpired} />
+      {!isExpiredProp && (
+        <Timer endDate={new Date(auction.endsAt)} onExpiring={handleExpired} />
+      )}
       <p className="flexbox font-3 bold">
         Starting price:
         <span className="font-light bold font-4 ml-2">
@@ -177,7 +169,7 @@ const AuctionBidding = ({ auction }: AuctionBiddingProps) => {
           {auction.minimumStep}
         </span>
       </p>
-      {!expired ? (
+      {!expired && !isExpiredProp ? (
         <>
           <hr className="line back-dark" />
           <h3 className="font-4 mb-3 mt-4">Want to make a bid?</h3>

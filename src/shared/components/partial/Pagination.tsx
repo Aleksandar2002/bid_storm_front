@@ -19,7 +19,9 @@ const Pagination = ({ fullWidth = true }: PaginationProps) => {
   const currentPage = Number(searchParams.get("page") || 1);
 
   const setPage = (page: number) => {
-    setSearchParams({ page: String(page) });
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("page", String(page));
+    setSearchParams(newParams);
   };
 
   const handlePreviousClick = () => {

@@ -3,6 +3,7 @@ import GenericForm from "../../shared/components/generics/GenericForm";
 import { fields, schema, type FormType } from "./formData/profileForm";
 import { getUserData } from "../../app/services/authService";
 import { useToast } from "../../app/stores/toastMessageStore";
+import { getAndSetLoggedUser } from "../../shared/utils/authHelper";
 
 const Profile = () => {
   const [userSettings, setUserSettings] = useState<FormType>();
@@ -12,6 +13,7 @@ const Profile = () => {
     const fetchUserData = async () => {
       const resp = await getUserData();
       setId(resp.data.id);
+      resp.data.avatar = [resp.data.avatar];
       setUserSettings(resp.data);
     };
 
@@ -20,8 +22,9 @@ const Profile = () => {
 
   const { setSuccessToast } = useToast();
 
-  const handleSuccess = () => {
+  const handleSuccess = async () => {
     setSuccessToast("Successfully saved");
+    await getAndSetLoggedUser();
   };
 
   return (
@@ -42,6 +45,7 @@ const Profile = () => {
             }}
             shouldResetAfterSubmit={false}
             onSuccess={handleSuccess}
+            method="Put"
           />
         )}
       </div>

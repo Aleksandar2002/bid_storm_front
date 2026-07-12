@@ -34,13 +34,13 @@ const Dialog = () => {
     <div className="dialog-div" onClick={handleDialogClose}>
       <div className="dialog" onClick={(e) => e.stopPropagation()}>
         <div className="header">
-          {title && <h3>{title}</h3>}
+          {title && <h3 className="font-10 bold">{title}</h3>}
           <Button btnClass="secondary" handleClickFunction={handleDialogClose}>
             <FontAwesomeIcon icon={"close"} />
           </Button>
         </div>
         <div className="content">
-          {text && <p className="text">{text}</p>}
+          {text && <p className="text ">{text}</p>}
           {content}
           {type == "confirmation" && (
             <div className="btns">

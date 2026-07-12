@@ -22,5 +22,7 @@ export const getAndSetLoggedUser = async () => {
     email: meResponse.data.email,
     role: meResponse.data.roleName,
     allowedUseCases: meResponse.data.allowedUseCases,
+    username: meResponse.data.username,
+    avatar: meResponse.data.avatar,
   });
 };

@@ -39,6 +39,7 @@ const AddAuction = () => {
           add: "/auctions",
         }}
         onSuccess={handleSuccess}
+        method="Post"
       />
     </div>
   );

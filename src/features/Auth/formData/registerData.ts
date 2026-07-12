@@ -66,6 +66,15 @@ export const registerSchema = z
       .string()
       .regex(/^(\+?\d{1,3}[- ]?)?\d{7,15}$/, "Invalid phone number format"),
     placeId: z.number().gt(0, "You need to choose city."),
+    avatar: z
+      .array(
+        z.string({
+          message: "Every image must be a string",
+        }),
+      )
+      .max(1, { message: "Only one image allowed" })
+      .nullable()
+      .optional(),
   })
   .refine((data) => data.password == data.confirmPassword, {
     message: "Passwords must be the same",
@@ -177,5 +186,13 @@ export const registerFormFields: Array<IFormField<RegistrationFormType>> = [
     name: "apartmentNumber",
     type: "textField",
     cols: 16,
+  },
+  {
+    label: "Avatar",
+    name: "avatar",
+    type: "file",
+    cols: 50,
+    accept: "image/png, image/jpeg, image/jpg, image/webp",
+    multiple: false,
   },
 ];

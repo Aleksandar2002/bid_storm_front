@@ -42,6 +42,7 @@ const Login = () => {
         title="Login form"
         onSubmitAction={handleSubmit}
         defaultValues={defaultValues}
+        method="Post"
       >
         <p className="text-center m-4 additional-form-text">
           Don't have an account? Register <Link to="/register">HERE</Link>
